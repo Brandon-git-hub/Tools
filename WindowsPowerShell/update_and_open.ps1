@@ -2,7 +2,7 @@
 $gitPaths = @(
     "C:\Users\brandon_wu\Documents\P005\Docs",
     "C:\Users\brandon_wu\Documents\esp_idf\Wifi_system_v2",
-    # "C:\Users\brandon_wu\Desktop\Tools",
+    "C:\Users\brandon_wu\Desktop\Tools",
     "C:\Users\brandon_wu\Documents\PersonalDrive",
     "C:\Users\brandon_wu\Documents\Wifi_system_MQTT_Broker"
 )
