@@ -1,9 +1,10 @@
+@REM copy_without_svn.bat
 @echo off
 setlocal EnableExtensions
 
-rem === paths ===  (PADAUK_IDE, Writer_All)
-set "SRC=C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_All"
-set "DST=C:\Users\brandon_wu\Documents\PDK_IDE\250808_version\Writer_All"
+rem === paths ===  (PADAUK_IDE, Writer_All, Writer_IC_RPC)
+set "SRC=C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_IC_RPC"
+set "DST=C:\Users\brandon_wu\Documents\PDK_IDE\250808_version\Writer_IC_RPC"
 
 rem === normalize & guards ===
 for %%I in ("%SRC%") do set "SRC_FULL=%%~fI"

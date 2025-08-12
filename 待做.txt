@@ -1,0 +1,12 @@
+
+
+寫一個.bat or ps，去檢查以下受Tortoise SVN版本管理的路徑資料夾路徑:
+C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\PADAUK_IDE
+C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_All
+C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_IC_RPC
+我需要你做以下動作
+1. revert modify
+2. 將unvisioned 的files folder全部移除
+3. ignored的也移除
+4. SVN update
+(簡單來說就是更新至最新狀態，本地任何異動全部移除!)
