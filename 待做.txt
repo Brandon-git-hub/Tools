@@ -1,0 +1,9 @@
+請參考附檔，我的需求是
+將"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\PADAUK_IDE"
+"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_All"
+"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_IC_RPC"
+複製並且不包含.svn，到
+"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\PADAUK_IDE"
+"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\Writer_All"
+"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\Writer_IC_RPC"
+%date%格式如今日是2025/8/14，則date是"250814"
