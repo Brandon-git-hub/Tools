@@ -1,9 +1,5 @@
-請參考附檔，我的需求是
-將"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\PADAUK_IDE"
-"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_All"
-"C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_IC_RPC"
-複製並且不包含.svn，到
-"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\PADAUK_IDE"
-"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\Writer_All"
-"C:\Users\brandon_wu\Documents\PDK_IDE\%date%_version\Writer_IC_RPC"
-%date%格式如今日是2025/8/14，則date是"250814"
+我想寫一個bat，將目錄: C:\Users\brandon_wu\Documents\PDK_IDE\250814_version\Writer_IC_RPC\tool\Runner，下的所有子資料夾中的.json檔。
+按照相同相對路徑，copy到 路徑: C:\Users\brandon_wu\Documents\PDK_IDE\common_backup\Writer_IC_RPC\Reg (若不存在就建立)。
+範例:
+路徑C:\Users\brandon_wu\Documents\PDK_IDE\250814_version\Writer_IC_RPC\tool\Runner\pa2427下有2427_erase.json檔。
+就將其複製到C:\Users\brandon_wu\Documents\PDK_IDE\common_backup\Writer_IC_RPC\Reg\pa2427。
