@@ -9,7 +9,7 @@ $gitPaths = @(
 
 # 需要用 VS Code 開啟的路徑
 $codePaths = @(
-    "C:\Users\brandon_wu\Documents\P005\Docs",
+    "C:\Users\brandon_wu\Documents\P005\Docs"
     # "C:\Users\brandon_wu\Desktop\Tools"
 )
 

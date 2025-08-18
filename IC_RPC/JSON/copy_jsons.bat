@@ -2,7 +2,8 @@
 setlocal EnableExtensions
 chcp 65001 >nul
 
-set "SRC=C:\Users\brandon_wu\Documents\PDK_IDE\250814_version\Writer_IC_RPC\tool\Runner"
+@REM set "SRC=C:\Users\brandon_wu\Documents\PDK_IDE\250814_version\Writer_IC_RPC\tool\Runner"
+set "SRC=C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE\Writer_IC_RPC\tool\Runner"
 set "DST=C:\Users\brandon_wu\Documents\PDK_IDE\common_backup\Writer_IC_RPC\Reg"
 
 goto :after_notes
