@@ -1,6 +1,6 @@
 @echo off
 pushd "C:\Users\brandon_wu\Documents\PDK_IDE\Newest_IDE" || (
-  echo [FAIL] Cannot cd into "%BASE%\%LATEST%"
+  echo [FAIL] Cannot cd into "Newest_IDE"
   exit /b 4
 )
 rem 解除舊的 O: 對應（若沒有就忽略錯誤）
