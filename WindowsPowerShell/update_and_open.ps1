@@ -44,21 +44,37 @@ $codeCmd = Get-Command code -ErrorAction SilentlyContinue
 if (-not $codeCmd) {
     Write-Host "VS Code 'code' command not found in PATH. Skipping VS Code section."
 } else {
-    foreach ($path in $codePaths) {
-        Write-Host "=== Open in VS Code: $path ==="
-
-        if (Test-Path $path) {
-            # 在指定資料夾內開啟 VS Code
-            Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $path
-            Write-Host "Opening in VS Code..."
-            # code .
-        } else {
-            Write-Host "Path not found: $path"
+    $codeExe = Join-Path (Split-Path (Split-Path $codeCmd.Source -Parent) -Parent) 'Code.exe'
+    if (-not (Test-Path $codeExe)) {
+        # 萬一抓不到，就試常見的安裝位置
+        $codeExe = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"
+    }
+    if (-not (Test-Path $codeExe)) {
+        Write-Host "Cannot locate Code.exe, fallback to 'code' shim (may leave a cmd window)."
+        foreach ($path in $codePaths) {
+            if (Test-Path $path) {
+                # 如果只能用 shim，至少把 shim 的視窗藏起來
+                Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $path -WindowStyle Hidden
+                Write-Host "Opening in VS Code (shim, hidden window): $path"
+            } else {
+                Write-Host "Path not found: $path"
+            }
         }
-
-        Write-Host ""
+    } else {
+        foreach ($path in $codePaths) {
+            Write-Host "=== Open in VS Code: $path ==="
+            if (Test-Path $path) {
+                # -ArgumentList 可用 -r（reuse window）或 -n（new window），選一個習慣
+                Start-Process -FilePath $codeExe -ArgumentList @("-r", $path)
+                Write-Host "Opening in VS Code..."
+                # code .
+            } else {
+                Write-Host "Path not found: $path"
+            }
+            Write-Host ""
+        }
     }
 }
 
 Write-Host "All done."
-Start-Sleep -Seconds 10
+# Start-Sleep -Seconds 10
