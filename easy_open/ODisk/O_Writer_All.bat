@@ -2,7 +2,7 @@
 setlocal
 
 REM  由 .bat 所在位置組出 .ps1 的絕對路徑（把 .. 正規化）===
-set "REL_PS1=%~dp0..\WindowsPowerShell\open_vscode.ps1"
+set "REL_PS1=%~dp0..\..\WindowsPowerShell\open_vscode.ps1"
 for %%I in ("%REL_PS1%") do set "PS1=%%~fI"
 
 echo [DEBUG] BAT DIR   : "%~dp0"

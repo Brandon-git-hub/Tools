@@ -54,44 +54,44 @@ for %%D in (%DIRS%) do (
             echo [OK]   Done "%%D" (robocopy code !RC!)
         )
 
-        @REM rem === git init / add / commit (per-destination folder) ===
-        @REM pushd "!DST!" >nul
-        @REM if errorlevel 1 (
-        @REM     echo [FAIL] Cannot enter "!DST!"
-        @REM ) else (
-        @REM   rem 2) 初始化 repo（若尚未存在）
-        @REM   if exist ".git" (
-        @REM     echo [INFO] existing git repo
-        @REM   ) else (
-        @REM     git init >nul || (echo [FAIL] git init failed & popd & exit /b 10)
-        @REM     echo [OK]   git init
-        @REM   )
+        rem === git init / add / commit (per-destination folder) ===
+        pushd "!DST!" >nul
+        if errorlevel 1 (
+            echo [FAIL] Cannot enter "!DST!"
+        ) else (
+          rem 2) 初始化 repo（若尚未存在）
+          if exist ".git" (
+            echo [INFO] existing git repo
+          ) else (
+            git init >nul || (echo [FAIL] git init failed & popd & exit /b 10)
+            echo [OK]   git init
+          )
 
-        @REM   rem 關閉warning
-        @REM   git config --local core.safecrlf false
+          rem 關閉warning
+          git config --local core.safecrlf false
 
-        @REM   rem 3) 準備 .gitignore（若不存在就建立空檔）
-        @REM   if not exist ".gitignore" (
-        @REM     type nul > ".gitignore"
-        @REM     echo [OK]   created empty .gitignore
-        @REM   ) else (
-        @REM     echo [INFO] .gitignore exists
-        @REM   )
+          rem 3) 準備 .gitignore（若不存在就建立空檔）
+          if not exist ".gitignore" (
+            type nul > ".gitignore"
+            echo [OK]   created empty .gitignore
+          ) else (
+            echo [INFO] .gitignore exists
+          )
           
-        @REM   rem 4) add + commit（只有有變更才 commit）
-        @REM   git add -A || (echo [FAIL] git add failed & popd & exit /b 12)
-        @REM   echo [OK]   git add .
+          rem 4) add + commit（只有有變更才 commit）
+          git add -A || (echo [FAIL] git add failed & popd & exit /b 12)
+          echo [OK]   git add .
 
-        @REM   git diff --cached --quiet
-        @REM   if errorlevel 2 (
-        @REM     echo [FAIL] git diff --cached failed & popd & exit /b 14
-        @REM   ) else if errorlevel 1 (
-        @REM     git commit -m "first commit %DATE_YYMMDD%" >nul || (echo [FAIL] git commit failed & popd & exit /b 13)
-        @REM     echo [OK]   git commit "first commit %DATE_YYMMDD%"
-        @REM   ) else (
-        @REM     echo [INFO] nothing to commit
-        @REM   )
-        @REM )
+          git diff --cached --quiet
+          if errorlevel 2 (
+            echo [FAIL] git diff --cached failed & popd & exit /b 14
+          ) else if errorlevel 1 (
+            git commit -m "first commit %DATE_YYMMDD%" >nul || (echo [FAIL] git commit failed & popd & exit /b 13)
+            echo [OK]   git commit "first commit %DATE_YYMMDD%"
+          ) else (
+            echo [INFO] nothing to commit
+          )
+        )
         popd
     )
 )

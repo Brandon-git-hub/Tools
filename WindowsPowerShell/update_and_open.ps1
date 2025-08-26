@@ -54,7 +54,10 @@ if (-not $codeCmd) {
         foreach ($path in $codePaths) {
             if (Test-Path $path) {
                 # 如果只能用 shim，至少把 shim 的視窗藏起來
-                Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $path -WindowStyle Hidden
+                # Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $path -WindowStyle Hidden
+                $cmd = 'start "" "{0}" {1} "{2}"' -f $codeCmd.Source, $openArg, $path
+                Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $cmd -WindowStyle Hidden
+
                 Write-Host "Opening in VS Code (shim, hidden window): $path"
             } else {
                 Write-Host "Path not found: $path"
@@ -65,7 +68,11 @@ if (-not $codeCmd) {
             Write-Host "=== Open in VS Code: $path ==="
             if (Test-Path $path) {
                 # -ArgumentList 可用 -r（reuse window）或 -n（new window），選一個習慣
-                Start-Process -FilePath $codeExe -ArgumentList @("-r", $path)
+                # Start-Process -FilePath $codeExe -ArgumentList @("-r", $path)
+                $openArg = "-r"
+                $cmd = 'start "" "{0}" {1} "{2}"' -f $codeExe, $openArg, $path
+                Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $cmd -WindowStyle Hidden
+
                 Write-Host "Opening in VS Code..."
                 # code .
             } else {

@@ -33,7 +33,10 @@ $openArg = if ($Window -eq 'new') { '-n' } else { '-r' }
 if ($codeExe) {
     foreach ($p in $Paths) {
         if (Test-Path $p) {
-            Start-Process -FilePath $codeExe -ArgumentList @($openArg, $p)
+            # Start-Process -FilePath $codeExe -ArgumentList @($openArg, $p)
+            $cmd = 'start "" "{0}" {1} "{2}"' -f $codeExe, $openArg, $p
+            Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $cmd -WindowStyle Hidden
+
             Write-Host "Opening in VS Code (Code.exe): $p"
         } else {
             Write-Host "Path not found: $p"
@@ -43,7 +46,10 @@ if ($codeExe) {
     Write-Host "Code.exe not found, fallback to 'code' shim (hide cmd window)."
     foreach ($p in $Paths) {
         if (Test-Path $p) {
-            Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $p -WindowStyle Hidden
+            # Start-Process -FilePath $codeCmd.Source -ArgumentList "." -WorkingDirectory $p -WindowStyle Hidden
+            $cmd = 'start "" "{0}" .' -f $codeCmd.Source
+            Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $cmd -WorkingDirectory $p -WindowStyle Hidden
+
             Write-Host "Opening via shim: $p"
         } else {
             Write-Host "Path not found: $p"
