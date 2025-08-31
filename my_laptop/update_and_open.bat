@@ -9,6 +9,7 @@ for %%P in (
 "C:\Users\User\Documents\Docs"
 "C:\Users\User\Documents\PDK_Works\Wifi_system"
 "C:\Users\User\Documents\PDK_Works\Wifi_system_MQTT_Broker"
+"C:\Users\User\Documents\Tools\"
 ) do (
     echo === Git Pull: %%~fP ===
 
