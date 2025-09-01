@@ -44,6 +44,7 @@ if errorlevel 1 (
 ) else (
     for %%P in (
     "C:\Users\User\Documents\Docs"
+    "C:\Users\User\Documents\Blog"
     ) do call :OpenInCode "%%~fP"
 )
 goto :after_vscode
