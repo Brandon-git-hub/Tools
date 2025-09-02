@@ -25,5 +25,8 @@ set P1=C:\Users\User\Documents\Blog
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%PS1%" %MODE% "%P1%"
 REM 若有多個路徑就繼續加： "%P2%" "%P3%" ...
 
+rem open my github
+start "" "https://github.com/Brandon-git-hub/Blog"
+
 timeout /t 5 /nobreak > nul
 exit /b
