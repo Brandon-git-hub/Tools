@@ -3,7 +3,7 @@ setlocal
 
 set DIR1=C:\Users\User\Documents\Tools
 set DIR2=C:\Users\User\Documents\Docs
-set DIR3=C:\Users\User\Documents\Blog
+set DIR3=C:\Users\User\Documents\TechBlog
 
 echo [INFO] 執行 %DIR1%\auto_git_push.bat
 pushd %DIR1%
