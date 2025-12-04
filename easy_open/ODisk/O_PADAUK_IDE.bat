@@ -20,7 +20,7 @@ REM 視窗模式：reuse 或 new
 set MODE=new
 
 REM 想開哪幾個資料夾就傳哪幾個（可 1 個或多個）
-set P1=O:\O_PADAUK_IDE
+set P1=O:\PADAUK_IDE
 @REM set P2=
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%PS1%" %MODE% "%P1%"
