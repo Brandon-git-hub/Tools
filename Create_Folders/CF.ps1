@@ -8,9 +8,8 @@ if (-not $Paths -or $Paths.Count -eq 0) {
     exit 0
 }
 
-# 定義要建立的數字範圍
-# 使用一個陣列來儲存所有需要建立的數字
-$FolderNumbers = (30..36) + (40..42)
+# 定義
+$FolderNumbers = "0B", "0C", "0D"
 
 # 定義每個資料夾內的子資料夾名稱
 $SubFolder = "dump"
