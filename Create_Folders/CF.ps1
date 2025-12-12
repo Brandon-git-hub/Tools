@@ -9,10 +9,10 @@ if (-not $Paths -or $Paths.Count -eq 0) {
 }
 
 # 定義
-$FolderNumbers = "0B", "0C", "0D"
+$FolderNumbers = "15", "16"
 
 # 定義每個資料夾內的子資料夾名稱
-$SubFolder = "dump"
+$SubFolder = "Scan_VPP"
 
 foreach ($p in $Paths) {
     $TargetDir = $p
@@ -25,9 +25,12 @@ foreach ($p in $Paths) {
 
         # 2. 組合完整的路徑，直接包含子資料夾，並用 New-Item -Force 建立
         # 範例路徑: C:\Users\brandon_wu\...\#30\dump
-        $FullPathWithSubFolder = Join-Path -Path $TargetDir -ChildPath "$FolderName\$SubFolder"
+        $FullPathWithSubFolder1 = Join-Path -Path $TargetDir -ChildPath "$FolderName\$SubFolder\3_12V"
+        $FullPathWithSubFolder2 = Join-Path -Path $TargetDir -ChildPath "$FolderName\$SubFolder\11_3V"
+        # $FullPathWithSubFolder = Join-Path -Path $TargetDir -ChildPath "$FolderName\"
 
         # New-Item 加上 -Force 會自動建立所有不存在的父目錄和子目錄
-        New-Item -ItemType Directory -Path $FullPathWithSubFolder -Force | Out-Null
+        New-Item -ItemType Directory -Path $FullPathWithSubFolder1 -Force | Out-Null
+        New-Item -ItemType Directory -Path $FullPathWithSubFolder2 -Force | Out-Null
     }
 }
