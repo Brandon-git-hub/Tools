@@ -9,7 +9,7 @@ if (-not $Paths -or $Paths.Count -eq 0) {
 }
 
 # 定義
-$FolderNumbers = "18", "19", "1A", "1B", "1C", "1D"
+$FolderNumbers = "1E", "1F", "20", "21", "22", "23"
 
 # 定義每個資料夾內的子資料夾名稱
 # $SubFolder = "Scan_VPP"
