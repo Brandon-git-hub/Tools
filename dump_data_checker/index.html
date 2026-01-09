@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dump Data Checker Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Control Panel -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <h1>Dump Data Checker</h1>
+                <div class="theme-selector">
+                    <label for="theme-select">Theme:</label>
+                    <select id="theme-select">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="blue">Blue</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section" id="directory-info" style="display: none;">
+                <h2>Source Directory</h2>
+                <div class="glass-panel" style="padding: 10px; background: var(--input-bg); border: 1px solid var(--panel-border);">
+                    <p id="dir-name" class="small-text" style="word-break: break-all; font-family: var(--font-mono); color: var(--accent-color);"></p>
+                </div>
+            </div>
+
+            <!-- File Upload Section -->
+            <div class="section">
+                <h2>Files</h2>
+                <div id="drop-zone" class="drop-zone">
+                    <p>Drag & Drop files here</p>
+                    <p class="small-text">or click to upload</p>
+                    <!-- <input type="file" id="file-input" multiple accept=".txt" hidden> -->
+                    <input type="file" id="file-input" webkitdirectory directory multiple accept=".txt" hidden>
+                </div>
+                <ul id="file-list" class="file-list">
+                    <!-- File items will be added here -->
+                </ul>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="section">
+                <h2>Filters</h2>
+
+                <!-- Row Filter -->
+                <div class="control-group">
+                    <div class="checkbox-label">
+                        <input type="checkbox" id="row-filter-enable">
+                        <label for="row-filter-enable">Addres Filter (HEX)</label>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-wrapper">
+                            <label>From</label>
+                            <input type="text" id="row-from" placeholder="0000">
+                        </div>
+                        <div class="input-wrapper">
+                            <label>To</label>
+                            <input type="text" id="row-to" placeholder="FFFF">
+                        </div>
+                        <div class="input-wrapper">
+                            <label>Step</label>
+                            <input type="text" id="row-step" placeholder="1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column Filter -->
+                <div class="control-group">
+                    <div class="checkbox-label">
+                        <input type="checkbox" id="col-filter-enable">
+                        <label for="col-filter-enable">Column Filter (1...n)</label>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-wrapper">
+                            <label>From</label>
+                            <input type="text" id="col-from" placeholder="1">
+                        </div>
+                        <div class="input-wrapper">
+                            <label>To</label>
+                            <input type="text" id="col-to" placeholder="10">
+                        </div>
+                        <div class="input-wrapper">
+                            <label>Step</label>
+                            <input type="text" id="col-step" placeholder="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlight Section -->
+            <div class="section">
+                <div class="checkbox-label">
+                    <input type="checkbox" id="highlight-enable">
+                    <label for="highlight-enable">Highlighting</label>
+                </div>
+
+                <div class="highlight-row">
+                    <input type="text" id="pattern-1" placeholder="Pattern 1" value="1F_1F_FFFF">
+                    <input type="color" id="color-1" value="#D3D3D3">
+                </div>
+                <div class="highlight-row">
+                    <input type="text" id="pattern-2" placeholder="Pattern 2">
+                    <input type="color" id="color-2" value="#D3D3D3">
+                </div>
+                <div class="highlight-row">
+                    <input type="text" id="pattern-3" placeholder="Pattern 3">
+                    <input type="color" id="color-3" value="#D3D3D3">
+                </div>
+
+                <div class="control-group ecc-group">
+                    <div class="checkbox-label">
+                        <input type="checkbox" id="ecc-enable">
+                        <label for="ecc-enable">ECC Fail Check</label>
+                    </div>
+                    <div class="input-wrapper color-wrapper">
+                        <input type="color" id="ecc-color" value="#FFA0A0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="action-buttons">
+                <button id="btn-preview" class="btn primary">Apply Filters</button>
+                <button id="btn-export" class="btn secondary">Export .txt</button>
+            </div>
+        </aside>
+
+        <!-- Main Content / Preview -->
+        <main class="main-content glass-panel">
+            <div class="content-header">
+                <div class="header-left">
+                    <h2>Preview</h2>
+                    <div class="zoom-control">
+                        <button id="btn-zoom-out" class="icon-btn" title="Zoom Out">−</button>
+                        <input type="range" id="zoom-slider" min="0.5" max="2.0" step="0.1" value="1.0">
+                        <button id="btn-zoom-in" class="icon-btn" title="Zoom In">+</button>
+                        <button id="btn-zoom-reset" class="icon-btn" title="Reset to 100%">⟲</button>
+                        <span id="zoom-value">100%</span>
+                    </div>
+                </div>
+                <button id="btn-clear" class="btn text-btn">Clear</button>
+            </div>
+            <div id="preview-container" class="preview-container"></div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

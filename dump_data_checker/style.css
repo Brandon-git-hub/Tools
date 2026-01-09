@@ -1,0 +1,677 @@
+:root {
+    /* Default Dark Theme */
+    --bg-color: #121212;
+    --panel-bg: rgba(30, 30, 30, 0.7);
+    --panel-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #646cff;
+    --accent-hover: #747bff;
+    --danger-color: #ff5252;
+    --input-bg: rgba(0, 0, 0, 0.3);
+    --input-border: rgba(255, 255, 255, 0.2);
+    --table-header-bg: #1e1e1e;
+    --table-border: #333;
+    --table-hover: rgba(255, 255, 255, 0.05);
+    --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body.theme-light {
+    --bg-color: #f5f5f5;
+    --panel-bg: rgba(255, 255, 255, 0.8);
+    --panel-border: rgba(0, 0, 0, 0.1);
+    --text-primary: #333;
+    --text-secondary: #666;
+    --accent-color: #0056b3;
+    --accent-hover: #004494;
+    --danger-color: #d32f2f;
+    --input-bg: #fff;
+    --input-border: #ccc;
+    --table-header-bg: #e0e0e0;
+    --table-border: #ddd;
+    --table-hover: rgba(0, 0, 0, 0.05);
+}
+
+body.theme-blue {
+    --bg-color: #0f172a;
+    --panel-bg: rgba(30, 41, 59, 0.7);
+    --panel-border: rgba(148, 163, 184, 0.1);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --accent-color: #38bdf8;
+    --accent-hover: #0ea5e9;
+    --danger-color: #ef4444;
+    --input-bg: rgba(15, 23, 42, 0.3);
+    --input-border: rgba(148, 163, 184, 0.2);
+    --table-header-bg: #1e293b;
+    --table-border: #334155;
+    --table-hover: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.sidebar-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.sidebar-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.theme-selector select {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.section {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.section:last-child {
+    border-bottom: none;
+}
+
+.section h2 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Drop Zone */
+.drop-zone {
+    border: 2px dashed var(--input-border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--input-bg);
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+    border-color: var(--accent-color);
+    background: rgba(100, 108, 255, 0.1);
+}
+
+.drop-zone p {
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.small-text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* File List */
+.file-list {
+    list-style: none;
+    margin-top: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--input-bg);
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+}
+
+.file-item .remove-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 4px;
+}
+
+.file-item .remove-btn:hover {
+    color: var(--danger-color);
+}
+
+/* Controls */
+.control-group {
+    margin-bottom: 16px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.input-wrapper {
+    flex: 1;
+}
+
+.input-wrapper label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Highlight Controls */
+.highlight-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.highlight-row input[type="text"] {
+    flex: 1;
+}
+
+input[type="color"] {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.ecc-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+    font-family: var(--font-main);
+}
+
+.btn.primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background: var(--accent-hover);
+}
+
+.btn.secondary {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+}
+
+.btn.secondary:hover {
+    background: var(--panel-border);
+}
+
+.btn.text-btn {
+    background: none;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+}
+
+.btn.text-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.preview-container {
+    flex: 1;
+    overflow: auto;
+    background: var(--input-bg);
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+    position: relative;
+    /* For sticky positioning context */
+}
+
+/* Table Styles for Sticky Headers/Columns */
+table {
+    border-collapse: separate;
+    /* Required for sticky to work properly on borders sometimes, but collapse is usually preferred. Separate is safer for sticky. */
+    border-spacing: 0;
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+th,
+td {
+    padding: 4px 12px;
+    border-bottom: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
+    white-space: pre;
+    /* Keep whitespace */
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--input-bg);
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+}
+
+.file-item .remove-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 4px;
+}
+
+.file-item .remove-btn:hover {
+    color: var(--danger-color);
+}
+
+/* Controls */
+.control-group {
+    margin-bottom: 16px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.input-wrapper {
+    flex: 1;
+}
+
+.input-wrapper label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* Highlight Controls */
+.highlight-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.highlight-row input[type="text"] {
+    flex: 1;
+}
+
+input[type="color"] {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.ecc-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+    font-family: var(--font-main);
+}
+
+.btn.primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background: var(--accent-hover);
+}
+
+.btn.secondary {
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+}
+
+.btn.secondary:hover {
+    background: var(--panel-border);
+}
+
+.btn.text-btn {
+    background: none;
+    color: var(--text-secondary);
+    padding: 4px 8px;
+}
+
+.btn.text-btn:hover {
+    color: var(--text-primary);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.preview-container {
+    flex: 1;
+    overflow: auto;
+    background: var(--input-bg);
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+    position: relative;
+    min-width: 0;
+    /* For sticky positioning context */
+}
+
+/* Table Styles for Sticky Headers/Columns */
+table {
+    border-collapse: separate;
+    /* Required for sticky to work properly on borders sometimes, but collapse is usually preferred. Separate is safer for sticky. */
+    border-spacing: 0;
+    width: auto;
+    min-width: 100%;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+th,
+td {
+    padding: 4px 12px;
+    border-bottom: 1px solid var(--table-border);
+    border-right: 1px solid var(--table-border);
+    white-space: pre;
+    /* Keep whitespace */
+    text-align: left;
+    background-color: var(--bg-color);
+    /* Default bg for cells to cover content behind when scrolling */
+}
+
+/* Sticky Header (Row 0) */
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: var(--table-header-bg);
+    font-weight: 600;
+    border-bottom: 2px solid var(--table-border);
+}
+
+/* Sticky First Column (Index) */
+tbody th,
+thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 10;
+    background-color: var(--table-header-bg);
+    /* Index column usually stands out */
+    border-right: 2px solid var(--table-border);
+    padding: 4px 4px;
+    /* Reduced padding */
+}
+
+/* Top-Left Corner (Intersection) */
+thead th:first-child {
+    z-index: 30;
+}
+
+tbody tr:hover td {
+    background-color: var(--table-hover);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.4);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.6);
+}
+
+/* Highlighting - Text Color Only */
+/* These classes will be applied to the cell (td) */
+/* Note: We use !important to override default text color if needed, though specificity should handle it. */
+/* Zoom Control */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.zoom-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--input-bg);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--input-border);
+}
+
+.zoom-control label {
+    font-size: 1rem;
+    cursor: default;
+}
+
+#zoom-slider {
+    width: 100px;
+    cursor: pointer;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.icon-btn:hover {
+    color: var(--accent-color);
+}
+
+#zoom-value {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    min-width: 40px;
+    text-align: right;
+    font-family: var(--font-mono);
+}
