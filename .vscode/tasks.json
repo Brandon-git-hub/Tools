@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Excel Converter GUI (Personal Laptop)",
+            "type": "shell",
+            "command": "C:\\Users\\User\\Documents\\Tools\\Excel_Converter_GUI\\run_excel_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Excel Converter GUI (Company Desktop)",
+            "type": "shell",
+            "command": "C:\\Users\\brandon_wu\\Desktop\\Tools\\Excel_Converter_GUI\\run_excel_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Word to PDF Converter GUI (Personal Laptop)",
+            "type": "shell",
+            "command": "C:\\Users\\User\\Documents\\Tools\\Word_to_PDF_Converter_GUI\\run_word_to_pdf_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Word to PDF Converter GUI (Company Desktop)",
+            "type": "shell",
+            "command": "C:\\Users\\brandon_wu\\Desktop\\Tools\\Word_to_PDF_Converter_GUI\\run_word_to_pdf_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}
