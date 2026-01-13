@@ -1,6 +1,15 @@
 // State
 let uploadedFiles = []; // { name: string, content: string, df: object }
 let mergedData = null; // { index: [], columns: [], data: {} }
+let savedDiffRefCol = null; // Store saved diff reference column name
+const targetOrder = [
+    "pdk_ecc.txt",
+    "2V0_r3_vdd_4500.txt",
+    "2V0_r5_vdd_4500.txt",
+    "3V0_r1_vdd_4500.txt",
+    "4V0_r4_vdd_4500.txt",
+    "4V0_r0_vdd_4500.txt"
+];
 
 // DOM Elements
 const dropZone = document.getElementById('drop-zone');
@@ -23,10 +32,17 @@ dropZone.addEventListener('drop', handleDrop);
 fileInput.addEventListener('change', handleFileSelect);
 btnPreview.addEventListener('click', updatePreview);
 btnExport.addEventListener('click', exportData);
-btnClear.addEventListener('click', () => {
+
+function clearAllData() {
     previewContent.innerHTML = '';
     mergedData = null;
-});
+    uploadedFiles = [];
+    renderFileList();
+    document.getElementById('directory-info').style.display = 'none'; // 清除時隱藏
+    updateDiffOptions([]); // Clear diff options
+}
+
+btnClear.addEventListener('click', clearAllData);
 themeSelect.addEventListener('change', (e) => {
     document.body.className = `theme-${e.target.value}`;
     saveSettings();
@@ -94,6 +110,11 @@ function saveSettings() {
                 { pat: document.getElementById('pattern-2').value, col: document.getElementById('color-2').value },
                 { pat: document.getElementById('pattern-3').value, col: document.getElementById('color-3').value }
             ],
+            diff: {
+                enable: document.getElementById('diff-enable').checked,
+                refCol: document.getElementById('diff-ref-col').value,
+                color: document.getElementById('diff-color').value
+            },
             ecc: {
                 enable: document.getElementById('ecc-enable').checked,
                 color: document.getElementById('ecc-color').value
@@ -146,6 +167,13 @@ function loadSettings() {
                 });
             }
 
+            if (settings.highlight.diff) {
+                document.getElementById('diff-enable').checked = settings.highlight.diff.enable;
+                // Save to global variable to apply later when options are available
+                savedDiffRefCol = settings.highlight.diff.refCol;
+                document.getElementById('diff-color').value = settings.highlight.diff.color || '#FF0000';
+            }
+
             if (settings.highlight.ecc) {
                 document.getElementById('ecc-enable').checked = settings.highlight.ecc.enable;
                 document.getElementById('ecc-color').value = settings.highlight.ecc.color || '#FFA0A0';
@@ -168,6 +196,47 @@ allInputs.forEach(input => {
 // Load settings on startup
 loadSettings();
 
+// Helper: Update Diff Options
+function updateDiffOptions(columns) {
+    const select = document.getElementById('diff-ref-col');
+    const currentVal = select.value;
+    
+    select.innerHTML = '';
+    
+    if (!columns || columns.length === 0) {
+        const option = document.createElement('option');
+        option.text = 'Load files first';
+        option.disabled = true;
+        option.selected = true;
+        select.add(option);
+        return;
+    }
+    
+    columns.forEach(col => {
+        const option = document.createElement('option');
+        option.value = col;
+        option.text = col;
+        select.add(option);
+    });
+    
+    // Restore selection
+    // Priority: Saved setting > Current Value (if valid) > First Option
+    if (savedDiffRefCol && columns.includes(savedDiffRefCol)) {
+        select.value = savedDiffRefCol;
+    } else if (currentVal && columns.includes(currentVal)) {
+        select.value = currentVal;
+    } else {
+        select.value = columns[0];
+    }
+    
+    // Update saved setting to match what we actually selected (if it changed)
+    // This prevents "ghost" settings
+    if (select.value !== savedDiffRefCol) {
+        // savedDiffRefCol = select.value; // Optional: update internal state
+        // saveSettings(); // Optional: trigger save? Maybe better to wait for user interaction.
+    }
+}
+
 // File Handling
 function handleDrop(e) {
     e.preventDefault();
@@ -182,25 +251,67 @@ function handleFileSelect(e) {
     fileInput.value = ''; // Reset input
 }
 
+// async function processFiles(files) {
+//     for (const file of files) {
+//         // Check for duplicates
+//         let name = file.name;
+//         let counter = 2;
+//         while (uploadedFiles.some(f => f.name === name)) {
+//             const baseName = file.name.replace(/\.txt$/i, '');
+//             name = `${baseName} (${counter}).txt`;
+//             counter++;
+//         }
+
+//         const text = await file.text();
+//         const df = parseFileToDf(text, name);
+
+//         if (df) {
+//             uploadedFiles.push({ name, content: text, df });
+//             addFileToList(name);
+//         }
+//     }
+// }
 async function processFiles(files) {
+    if (files.length === 0) return;
+
+    // Clear existing data before processing new upload
+    clearAllData();
+
+    // 顯示目錄資訊：從第一個檔案的 webkitRelativePath 提取根資料夾名稱
+    const firstFile = files[0];
+    if (firstFile.webkitRelativePath) {
+        const pathParts = firstFile.webkitRelativePath.split('/');
+        const rootFolder = pathParts[0]; // 取得選擇的資料夾名稱
+        document.getElementById('dir-name').textContent = `📁 ${rootFolder}`;
+        document.getElementById('directory-info').style.display = 'block';
+    }
+
+    // 將選取的檔案轉換成一個 Map，方便透過檔名快速查找
+    const fileMap = {};
     for (const file of files) {
-        // Check for duplicates
-        let name = file.name;
-        let counter = 2;
-        while (uploadedFiles.some(f => f.name === name)) {
-            const baseName = file.name.replace(/\.txt$/i, '');
-            name = `${baseName} (${counter}).txt`;
-            counter++;
-        }
+        fileMap[file.name] = file;
+    }
 
-        const text = await file.text();
-        const df = parseFileToDf(text, name);
+    // 依照 targetOrder 的順序進行處理
+    for (const fileName of targetOrder) {
+        const file = fileMap[fileName];
+        
+        if (file) {
+            // 檢查是否已經在 uploadedFiles 中 (避免重複上傳)
+            if (uploadedFiles.some(f => f.name === file.name)) continue;
 
-        if (df) {
-            uploadedFiles.push({ name, content: text, df });
-            addFileToList(name);
+            const text = await file.text();
+            const df = parseFileToDf(text, file.name);
+
+            if (df) {
+                uploadedFiles.push({ name: file.name, content: text, df });
+                addFileToList(file.name);
+            }
         }
     }
+    
+    // 選項：讀取完畢後自動執行預覽 (如果您希望選完資料夾就直接顯示)
+    if (uploadedFiles.length > 0) updatePreview(); 
 }
 
 function addFileToList(name) {
@@ -221,6 +332,7 @@ window.removeFile = function (name) {
         if (uploadedFiles.length === 0) {
             mergedData = null;
             previewContent.innerHTML = '';
+            updateDiffOptions([]);
         }
     }
 };
@@ -347,6 +459,9 @@ function updatePreview() {
     mergedData = mergeData();
     if (!mergedData) return;
 
+    // Update Diff Dropdown with available columns
+    updateDiffOptions(mergedData.columns);
+
     // Get Filter Parameters
     const rowFilterEnable = document.getElementById('row-filter-enable').checked;
     const rowFrom = parseInt(document.getElementById('row-from').value, 16);
@@ -407,12 +522,12 @@ function updatePreview() {
         const idxVal = mergedData.index[rowIdx];
         const idxStr = idxVal.toString(16).toUpperCase().padStart(4, '0');
 
-        html += '<tr>';
+        html += `<tr data-row-idx="${rowIdx}">`;
         html += `<th>${idxStr}</th>`; // Sticky Index Column
 
-        displayCols.forEach(col => {
+        displayCols.forEach((col, cIdx) => {
             const val = mergedData.data[col][rowIdx] || '';
-            html += `<td data-val="${val}">${escapeHtml(val)}</td>`;
+            html += `<td data-val="${val}" data-col-idx="${cIdx}">${escapeHtml(val)}</td>`;
         });
         html += '</tr>';
     });
@@ -445,39 +560,82 @@ function applyHighlights() {
     const eccEnable = document.getElementById('ecc-enable').checked;
     const eccColor = document.getElementById('ecc-color').value;
 
+    // Get Diff Settings
+    const diffEnable = document.getElementById('diff-enable').checked;
+    const diffRefColName = document.getElementById('diff-ref-col').value;
+    const diffColor = document.getElementById('diff-color').value;
+
     // Apply to all data cells (td)
     const cells = previewContent.querySelectorAll('td');
 
+    // Reset styles first
+    cells.forEach(cell => {
+        cell.style.color = '';
+        cell.style.fontWeight = '';
+    });
+
+    // 1. Pattern Highlight
     cells.forEach(cell => {
         const text = cell.getAttribute('data-val');
         if (!text) return;
 
-        // Reset style first
-        cell.style.color = '';
-        cell.style.fontWeight = '';
-
-        // Pattern Highlight
         patterns.forEach(p => {
             if (text.includes(p.pat)) {
                 cell.style.color = p.col;
-                cell.style.fontWeight = 'bold'; // Make it pop a bit more since it's just text color
+                cell.style.fontWeight = 'bold';
             }
         });
-
-        // ECC Check
-        if (eccEnable) {
-            const parts = text.split('_');
-            if (parts.length >= 3) {
-                const a = parts[0];
-                const b = parts[1];
-                if (a.toUpperCase() !== b.toUpperCase()) {
-                    cell.style.color = eccColor;
-                    cell.style.fontWeight = 'bold';
-                }
-            }
-        }
     });
+
+    // 2. Diff Highlight
+    if (diffEnable && diffRefColName && mergedData.data[diffRefColName]) {
+        const rows = previewContent.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const rowIdx = row.getAttribute('data-row-idx');
+            // Get reference value for this specific row from the source data
+            const refVal = mergedData.data[diffRefColName][rowIdx];
+
+            if (refVal !== undefined && refVal !== null) {
+                const rowCells = row.querySelectorAll('td');
+                rowCells.forEach(cell => {
+                    const val = cell.getAttribute('data-val');
+                    // We must determine if this cell belongs to the reference column
+                    // Since we have data-col-idx, we can check display columns?
+                    // But display columns logic is inside updatePreview.
+                    // Easier check: The table header has the column name?
+                    // We can assume we want to diff everything *except* the reference column.
+                    // But if the reference column is displayed, we shouldn't highlight it against itself.
+                    // We can check if the value matches first. If match, no highlight. 
+                    // (Self-comparison always matches, so it won't highlight, which is correct!)
+                    
+                    if (val !== refVal) {
+                        cell.style.color = diffColor;
+                        cell.style.fontWeight = 'bold';
+                    }
+                });
+            }
+        });
+    }
+
+    // 3. ECC Check
+    if (eccEnable) {
+        cells.forEach(cell => {
+             const text = cell.getAttribute('data-val');
+             if (!text) return;
+
+             const parts = text.split('_');
+             if (parts.length >= 3) {
+                 const a = parts[0];
+                 const b = parts[1];
+                 if (a.toUpperCase() !== b.toUpperCase()) {
+                     cell.style.color = eccColor;
+                     cell.style.fontWeight = 'bold';
+                 }
+             }
+        });
+    }
 }
+
 
 async function exportData() {
     if (!mergedData) {

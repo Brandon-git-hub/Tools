@@ -29,13 +29,21 @@
                 </div>
             </div>
 
+            <div class="section" id="directory-info" style="display: none;">
+                <h2>Source Directory</h2>
+                <div class="glass-panel" style="padding: 10px; background: var(--input-bg); border: 1px solid var(--panel-border);">
+                    <p id="dir-name" class="small-text" style="word-break: break-all; font-family: var(--font-mono); color: var(--accent-color);"></p>
+                </div>
+            </div>
+
             <!-- File Upload Section -->
             <div class="section">
                 <h2>Files</h2>
                 <div id="drop-zone" class="drop-zone">
                     <p>Drag & Drop files here</p>
                     <p class="small-text">or click to upload</p>
-                    <input type="file" id="file-input" multiple accept=".txt" hidden>
+                    <!-- <input type="file" id="file-input" multiple accept=".txt" hidden> -->
+                    <input type="file" id="file-input" webkitdirectory directory multiple accept=".txt" hidden>
                 </div>
                 <ul id="file-list" class="file-list">
                     <!-- File items will be added here -->
@@ -109,6 +117,17 @@
                 <div class="highlight-row">
                     <input type="text" id="pattern-3" placeholder="Pattern 3">
                     <input type="color" id="color-3" value="#D3D3D3">
+                </div>
+
+                <div class="control-group">
+                    <div class="checkbox-label">
+                        <input type="checkbox" id="diff-enable">
+                        <label for="diff-enable">Diff Check (vs Ref Col)</label>
+                    </div>
+                    <div class="highlight-row">
+                        <select id="diff-ref-col" style="flex: 1;"></select>
+                        <input type="color" id="diff-color" value="#FF0000">
+                    </div>
                 </div>
 
                 <div class="control-group ecc-group">
