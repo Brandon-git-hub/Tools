@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run Gemini CLI",
+            "label": "🔎 Run Gemini CLI",
             "type": "shell",
             "command": "conda run --no-capture-output -n gemini-cli gemini",
             "group": "none",
@@ -17,7 +17,7 @@
             "detail": "Launch the Gemini CLI in a new interactive terminal."
         },
         {
-            "label": "Run Excel Converter GUI (Personal Laptop)",
+            "label": "📊 Run Excel Converter GUI (💻 Personal Laptop)",
             "type": "shell",
             "command": "C:\\Users\\User\\Documents\\Tools\\Excel_Converter_GUI\\run_excel_converter_gui.bat",
             "group": "build",
@@ -31,7 +31,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Run Excel Converter GUI (Company Desktop)",
+            "label": "📊 Run Excel Converter GUI (💼 Company Desktop)",
             "type": "shell",
             "command": "C:\\Users\\brandon_wu\\Desktop\\Tools\\Excel_Converter_GUI\\run_excel_converter_gui.bat",
             "group": "build",
@@ -45,7 +45,7 @@
             "problemMatcher": []
         },
         {
-            "label": "Run Word to PDF Converter GUI (Personal Laptop)",
+            "label": "📄 Run Word to PDF Converter GUI (💻 Personal Laptop)",
             "type": "shell",
             "command": "C:\\Users\\User\\Documents\\Tools\\Word_to_PDF_Converter_GUI\\run_word_to_pdf_converter_gui.bat",
             "group": "build",
@@ -59,9 +59,37 @@
             "problemMatcher": []
         },
         {
-            "label": "Run Word to PDF Converter GUI (Company Desktop)",
+            "label": "📄 Run Word to PDF Converter GUI (💼 Company Desktop)",
             "type": "shell",
             "command": "C:\\Users\\brandon_wu\\Desktop\\Tools\\Word_to_PDF_Converter_GUI\\run_word_to_pdf_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "💡 Run PPT to PDF Converter GUI (💻 Personal Laptop)",
+            "type": "shell",
+            "command": "C:\\Users\\User\\Documents\\Tools\\PPT_to_PDF_Converter_GUI\\run_ppt_to_pdf_converter_gui.bat",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "💡 Run PPT to PDF Converter GUI (💼 Company Desktop)",
+            "type": "shell",
+            "command": "C:\\Users\\brandon_wu\\Desktop\\Tools\\PPT_to_PDF_Converter_GUI\\run_ppt_to_pdf_converter_gui.bat",
             "group": "build",
             "presentation": {
                 "reveal": "always",
