@@ -38,6 +38,11 @@ if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
         $workbook.SaveAs($csvFilePath, 62)
         Write-Host "Conversion successful! File saved to:" -ForegroundColor Green
         Write-Host $csvFilePath -ForegroundColor Green
+        
+        $openFile = Read-Host "Do you want to open the converted CSV file? (Y/N)"
+        if ($openFile -eq "Y" -or $openFile -eq "y") {
+            Start-Process -FilePath $csvFilePath
+        }
     }
     catch {
         Write-Host "An error occurred during conversion:" -ForegroundColor Red

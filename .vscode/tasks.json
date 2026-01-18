@@ -24,7 +24,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
-                "focus": true
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
             },
             "problemMatcher": []
         },
@@ -36,7 +38,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
-                "focus": true
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
             },
             "problemMatcher": []
         },
@@ -48,7 +52,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
-                "focus": true
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
             },
             "problemMatcher": []
         },
@@ -60,7 +66,9 @@
             "presentation": {
                 "reveal": "always",
                 "panel": "new",
-                "focus": true
+                "focus": true,
+                "close": true,
+                "showReuseMessage": false
             },
             "problemMatcher": []
         }

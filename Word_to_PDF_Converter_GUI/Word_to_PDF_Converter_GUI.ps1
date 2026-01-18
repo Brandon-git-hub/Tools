@@ -38,6 +38,11 @@ if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
         $document.SaveAs($pdfFilePath, 17)
         Write-Host "Conversion successful! File saved to:" -ForegroundColor Green
         Write-Host $pdfFilePath -ForegroundColor Green
+
+        $openFile = Read-Host "Do you want to open the converted PDF file? (Y/N)"
+        if ($openFile -eq "Y" -or $openFile -eq "y") {
+            Start-Process -FilePath $pdfFilePath
+        }
     }
     catch {
         Write-Host "An error occurred during conversion:" -ForegroundColor Red
