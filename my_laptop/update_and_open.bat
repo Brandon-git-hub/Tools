@@ -10,6 +10,9 @@ for %%P in (
 "C:\Users\User\Documents\PDK_Works\Wifi_system"
 "C:\Users\User\Documents\PDK_Works\Wifi_system_MQTT_Broker"
 "C:\Users\User\Documents\Tools\"
+"O:\Writer_All\"
+"O:\PADAUK_IDE\"
+"O:\Writer_IC_RPC\"
 ) do (
     echo === Git Pull: %%~fP ===
 
@@ -43,8 +46,6 @@ if errorlevel 1 (
     echo VS Code 'code' command not found in PATH. Skipping VS Code section.
 ) else (
     for %%P in (
-    "C:\Users\User\Documents\Docs"
-    "C:\Users\User\Documents\TechBlog"
     ) do call :OpenInCode "%%~fP"
 )
 goto :after_vscode
