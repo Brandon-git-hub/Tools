@@ -138,6 +138,58 @@ function Invoke-VmrunCommand {
 }
 
 # ---------------------------------------------------------
+# Advanced Commands Sub-Menu
+# ---------------------------------------------------------
+function Show-AdvancedMenu {
+    param (
+        [string]$VmKey,
+        [string]$VmPath
+    )
+
+    while ($true) {
+        Clear-Host
+        Write-Host "=========================================" -ForegroundColor Yellow
+        Write-Host "         Advanced / Other Commands       " -ForegroundColor Yellow
+        Write-Host "=========================================" -ForegroundColor Yellow
+        Write-Host "Active VM: $VmKey" -NoNewline
+        Write-Host " ($VmPath)" -ForegroundColor DarkGray
+        Write-Host "-----------------------------------------"
+        Write-Host "1.  Start VM (gui - Windowed)"
+        Write-Host "2.  Stop VM (hard - Power Off)"
+        Write-Host "3.  Reset VM (soft)"
+        Write-Host "4.  Reset VM (hard)"
+        Write-Host "5.  Suspend VM (hard)"
+        Write-Host "6.  Pause VM"
+        Write-Host "7.  Resume VM"
+        Write-Host "8.  Return to Main Menu"
+        Write-Host "========================================="
+
+        $advChoice = Read-Host "Enter your choice (1-8)"
+
+        switch ($advChoice) {
+            "1" { Invoke-VmrunCommand "start" $VmPath "gui" }
+            "2" { Invoke-VmrunCommand "stop" $VmPath "hard" }
+            "3" { Invoke-VmrunCommand "reset" $VmPath "soft" }
+            "4" { Invoke-VmrunCommand "reset" $VmPath "hard" }
+            "5" { Invoke-VmrunCommand "suspend" $VmPath "hard" }
+            "6" { Invoke-VmrunCommand "pause" $VmPath }
+            "7" { Invoke-VmrunCommand "unpause" $VmPath }
+            "8" { return }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Start-Sleep -Seconds 1
+                continue
+            }
+        }
+
+        if ($advChoice -match '^[1-7]$') {
+            Write-Host "`nPress any key to return to Advanced Menu..." -ForegroundColor Gray
+            [void]$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        }
+    }
+}
+
+# ---------------------------------------------------------
 # Interactive Menu
 # ---------------------------------------------------------
 function Show-InteractiveMenu {
@@ -154,36 +206,23 @@ function Show-InteractiveMenu {
         Write-Host "($selectedVmPath)" -ForegroundColor DarkGray
         Write-Host "-----------------------------------------"
         Write-Host "1.  Start VM (nogui - Background)"
-        Write-Host "2.  Start VM (gui - Windowed)"
+        Write-Host "2.  Suspend VM (soft)"
         Write-Host "3.  Stop VM (soft - Graceful Shutdown)"
-        Write-Host "4.  Stop VM (hard - Power Off)"
-        Write-Host "5.  Reset VM (soft)"
-        Write-Host "6.  Reset VM (hard)"
-        Write-Host "7.  Suspend VM (soft)"
-        Write-Host "8.  Suspend VM (hard)"
-        Write-Host "9.  Pause VM"
-        Write-Host "10. Resume VM"
-        Write-Host "11. List all running VMs"
-        Write-Host "12. Choose/Switch default VM"
-        Write-Host "13. Enter custom .vmx path"
-        Write-Host "14. Exit"
+        Write-Host "4.  List all running VMs"
+        Write-Host "5.  Choose/Switch default VM"
+        Write-Host "6.  Enter custom .vmx path"
+        Write-Host "7.  Advanced / Other commands"
+        Write-Host "8.  Exit"
         Write-Host "========================================="
         
-        $choice = Read-Host "Enter your choice (1-14)"
+        $choice = Read-Host "Enter your choice (1-8)"
         
         switch ($choice) {
             "1"  { Invoke-VmrunCommand "start" $selectedVmPath "nogui" }
-            "2"  { Invoke-VmrunCommand "start" $selectedVmPath "gui" }
+            "2"  { Invoke-VmrunCommand "suspend" $selectedVmPath "soft" }
             "3"  { Invoke-VmrunCommand "stop" $selectedVmPath "soft" }
-            "4"  { Invoke-VmrunCommand "stop" $selectedVmPath "hard" }
-            "5"  { Invoke-VmrunCommand "reset" $selectedVmPath "soft" }
-            "6"  { Invoke-VmrunCommand "reset" $selectedVmPath "hard" }
-            "7"  { Invoke-VmrunCommand "suspend" $selectedVmPath "soft" }
-            "8"  { Invoke-VmrunCommand "suspend" $selectedVmPath "hard" }
-            "9"  { Invoke-VmrunCommand "pause" $selectedVmPath }
-            "10" { Invoke-VmrunCommand "unpause" $selectedVmPath }
-            "11" { Invoke-VmrunCommand "list" }
-            "12" {
+            "4"  { Invoke-VmrunCommand "list" }
+            "5"  {
                 Clear-Host
                 Write-Host "=== Select Default VM ===" -ForegroundColor Green
                 $keys = @($DefaultVMs.Keys)
@@ -199,7 +238,7 @@ function Show-InteractiveMenu {
                     $selectedVmPath = $DefaultVMs[$selectedVmKey]
                 }
             }
-            "13" {
+            "6" {
                 $customPath = Read-Host "Enter absolute path to .vmx file"
                 if (-not [string]::IsNullOrWhiteSpace($customPath)) {
                     if (Test-Path $customPath) {
@@ -211,7 +250,10 @@ function Show-InteractiveMenu {
                     }
                 }
             }
-            "14" {
+            "7" {
+                Show-AdvancedMenu $selectedVmKey $selectedVmPath
+            }
+            "8" {
                 Write-Host "Goodbye!" -ForegroundColor Green
                 return
             }
@@ -221,7 +263,7 @@ function Show-InteractiveMenu {
             }
         }
 
-        if ($choice -match '^[1-9]$|^10$|^11$') {
+        if ($choice -match '^[1-4]$') {
             Write-Host "`nPress any key to return to menu..." -ForegroundColor Gray
             [void]$host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         }
