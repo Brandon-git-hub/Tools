@@ -13,8 +13,7 @@ if not exist "%PS1%" (
 )
 
 REM 想開哪幾個資料夾就傳哪幾個（可 1 個或多個）
-set P1=C:\Users\brandon_wu\Desktop\2413\New_config_2602
-set P2=C:\Users\brandon_wu\Desktop\2423\Before_CYC
+set P1=C:\Users\brandon_wu\Desktop\2423\20260629_hongfuhan_MF851_7pcs
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%PS1%" "%P1%"
 REM 若有多個路徑就繼續加： "%P2%" "%P3%" ...
